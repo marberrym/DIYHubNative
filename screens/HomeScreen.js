@@ -1,4 +1,5 @@
 import React from 'react';
+import url from '../GlobalVar';
 import {
   Image,
   Platform,
@@ -8,29 +9,37 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Head from '../navigation/Head';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    header: null
   };
+
+  componentDidMount() {
+    fetch(`${url}/project/featured`)
+    .then(res => {
+      console.log(res)
+      return res.json()})
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  }
 
   render() {
     return (
       <View style={styles.container}>
+        <Head style={styles.headNav}/>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/DIYHubLogo.png')
-                  : require('../assets/images/robot-prod.png')
-              }
+              source={require('../assets/images/DIYHubLogo.png')}
               style={styles.welcomeImage}
             />
             <Text style={styles.logoText}>DIY Hub</Text>
+            <Text style={styles.subLogoText}>Creations & Inspirations</Text>
           </View>
 
           <View style={styles.getStartedContainer}>
@@ -101,8 +110,9 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#0000',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -186,8 +196,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
+
   logoText: {
-    fontSize: 30,
+    fontSize: 50,
     color: '#4286f4'
+  },
+  subLogoText: {
+    fontSize: 18,
+    color: '#000000'
+  },
+  headNav: {
+    height: 10,
   }
 });
